@@ -40,7 +40,7 @@ for(dataset in datasets){
 
 cleanDataframe <- function(dataframe, activity, subject){
     dataframe <- dataframe %>%
-        select(contains("mean..") | contains("std..")) %>%
+        select(ends_with("mean..") | ends_with("std..")) %>%
         bind_cols(activity) %>%
         bind_cols(subject)
 }
@@ -68,15 +68,28 @@ levels(mergedDataFrame$activity) <- activities
 columnNames <- colnames(mergedDataFrame)
 tidyColumnNames <- gsub("\\.", "", columnNames)
 tidyColumnNames <- gsub("^t", "time", tidyColumnNames)
-tidyColumnNames <- gsub("^f", "time", tidyColumnNames)
-for(direction in c("X", "Y", "Z")){
-    tidyColumnNames <- gsub(paste(direction, "$", sep = ""),
-                            paste(direction, "axis", sep = ""),
-                            tidyColumnNames)
-}
-tidyColumnNames <- gsub("Acc", "accelerometer", tidyColumnNames)
-tidyColumnNames <- gsub("Gyro", "gyroscope", tidyColumnNames)
-tidyColumnNames <- gsub("Mag", "magnitude", tidyColumnNames)
-tidyColumnNames <- tolower(tidyColumnNames)
+tidyColumnNames <- gsub("^f", "frequency", tidyColumnNames)
+tidyColumnNames <- gsub("Acc", "Accelerometer", tidyColumnNames)
+tidyColumnNames <- gsub("Gyro", "Gyroscope", tidyColumnNames)
+tidyColumnNames <- gsub("Mag", "Magnitude", tidyColumnNames)
+tidyColumnNames <- gsub("mean", "Mean", tidyColumnNames)
+tidyColumnNames <- gsub("std", "StandardDeviation", tidyColumnNames)
+# tidyColumnNames <- tolower(tidyColumnNames)
 
 colnames(mergedDataFrame) <- tidyColumnNames
+
+# Creates tidy data set with the average of each variable for each activity and 
+# each subject.
+
+tidyDataFrame <- mergedDataFrame %>%
+    group_by(subject, activity, set) %>%
+    summarise_if(is.numeric, mean) %>%
+    arrange(subject, activity)
+
+columnNames <- colnames(tidyDataFrame)[4:length(colnames(tidyDataFrame))]
+tidyColumnNames <- gsub("$", "Average", columnNames)
+
+colnames(tidyDataFrame)[4:length(colnames(tidyDataFrame))] <- tidyColumnNames
+
+# Import data frame.
+write.table(tidyDataFrame, "./tidy_data_set.txt", row.names = FALSE)
