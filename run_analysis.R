@@ -38,18 +38,45 @@ for(dataset in datasets){
 # Clean test and train dataframes so they only include the mean and standard 
 # deviation for each measurament
 
+cleanDataframe <- function(dataframe, activity, subject){
+    dataframe <- dataframe %>%
+        select(contains("mean..") | contains("std..")) %>%
+        bind_cols(activity) %>%
+        bind_cols(subject)
+}
 
-testDf <- testDf %>%
-    select(contains("mean..") | contains("std..")) %>%
-    bind_cols(testDfActivity) %>%
-    bind_cols(testDfSubject)
+testDf <- cleanDataframe(testDf, testDfActivity, testDfSubject)
+trainDf <- cleanDataframe(trainDf, trainDfActivity, trainDfSubject)
 
-trainDf <- trainDf %>%
-    select(contains("mean..") | contains("std..")) %>%
-    bind_cols(trainDfActivity) %>%
-    bind_cols(trainDfSubject)
+
 
 # Clean the environment
 rm(list = c("testDfActivity", "testDfSubject", "trainDfActivity",
             "trainDfSubject"))
 
+# Add variable to the dataframe specifying if test or train.
+testDf <- mutate(testDf, set = factor("test"))
+trainDf <- mutate(trainDf, set = factor("train"))
+
+# Merge the dataframes.
+mergedDataFrame <- merge(testDf, trainDf, all = TRUE)
+
+# Use descriptive activity names.
+levels(mergedDataFrame$activity) <- activities
+
+# Change labels to make them descriptive
+columnNames <- colnames(mergedDataFrame)
+tidyColumnNames <- gsub("\\.", "", columnNames)
+tidyColumnNames <- gsub("^t", "time", tidyColumnNames)
+tidyColumnNames <- gsub("^f", "time", tidyColumnNames)
+for(direction in c("X", "Y", "Z")){
+    tidyColumnNames <- gsub(paste(direction, "$", sep = ""),
+                            paste(direction, "axis", sep = ""),
+                            tidyColumnNames)
+}
+tidyColumnNames <- gsub("Acc", "accelerometer", tidyColumnNames)
+tidyColumnNames <- gsub("Gyro", "gyroscope", tidyColumnNames)
+tidyColumnNames <- gsub("Mag", "magnitude", tidyColumnNames)
+tidyColumnNames <- tolower(tidyColumnNames)
+
+colnames(mergedDataFrame) <- tidyColumnNames
