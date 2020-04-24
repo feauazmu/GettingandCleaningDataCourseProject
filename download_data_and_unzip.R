@@ -4,3 +4,4 @@ download.file(fileUrl, "./UCI_HAR_Dataset.zip", method = "curl")
 
 ## Unzip the data
 unzip("./UCI_HAR_Dataset.zip", exdir = "./")
+file.remove("./UCI_HAR_Dataset.zip")
