@@ -40,7 +40,8 @@ for(dataset in datasets){
 
 cleanDataframe <- function(dataframe, activity, subject){
     dataframe <- dataframe %>%
-        select(ends_with("mean..") | ends_with("std..")) %>%
+        select(contains("mean..", ignore.case = FALSE) | 
+                   contains("std..", ignore.case = FALSE)) %>%
         bind_cols(activity) %>%
         bind_cols(subject)
 }
@@ -74,7 +75,6 @@ tidyColumnNames <- gsub("Gyro", "Gyroscope", tidyColumnNames)
 tidyColumnNames <- gsub("Mag", "Magnitude", tidyColumnNames)
 tidyColumnNames <- gsub("mean", "Mean", tidyColumnNames)
 tidyColumnNames <- gsub("std", "StandardDeviation", tidyColumnNames)
-# tidyColumnNames <- tolower(tidyColumnNames)
 
 colnames(mergedDataFrame) <- tidyColumnNames
 
