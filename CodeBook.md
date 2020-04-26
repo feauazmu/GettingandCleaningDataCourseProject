@@ -1,12 +1,46 @@
 # Codebook
 
-## Variables table
+## Data
+
+The raw datasets come from the [Human Activity Recognition Using Smartphones Data Set](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones).
+
+The data was manipulated to create the file ```tidy_data_set.txt```.
+
+## Manipulation
+
+Two columns were added to the train and the test datasets from the original source.  ```subject``` and ```activity```.  The information comes from different files in the original datasets.  They identify the subject who performs the activity and the type of activity performed.  The activities were renamed to be descriptive.
+
+Then the training and the test datasets were merged to created a unique dataset.  A variable call ```set```, with two values train or set, was created to identify where the observations comes from.  Only the measurements from the mean and standard deviation from each feature were kept.
+
+The data was grouped by subject and activity and the mean for each feature selected was calculated.
+
+The column names were also changed so they become more readable.
+
+## Variables
+
+The dataset has 180 rows and 69 columns.
+
+The subject column identifies the subject who performed the activity, the activity column describes the activity performed and the set identifies if the observation comes from the test dataset or the train dataset in the original datasets.
+
+The other columns contain information about the average of the features mean or standard deviation for the subject in the activity.  These were calculated by grouping the data by subject and activity and calculating the mean for each feature selected.  Only the mean and standard devation for each feature were selected.
+
+As described in the file of the original dataset ```features_info.txt```:
+
+>The features selected for this database come from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ. These time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. Similarly, the acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz.
+Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag).
+Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals).
+These signals were used to estimate variables of the feature vector for each pattern:  
+'-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
+
+The names were changed from the original datasets so they become more readable
+
+### Variables table
 
 name |	data type | min | median | max | mean | histogram | description
---- |	--- |	--- | --- | --- | --- | --- | --- 
+--- |	--- |	--- | --- | --- | --- | --- | ---
 |subject |	numeric | 1.000 |	15.5000 | 30.0000 | 15.5 	|	▇▇▇▇▇ | Identifies the subject who performed the activity for each window sample. Its range is from 1 to 30.|
-activity | character | | | | | | | The activity performed by each subject. Can be: walking, walking_upstairs, walking_downstairs, sitting, standing, laying
-set	character | | | | | | | Identifies if the observations come from the train of the test dataset.  Can be: train, test
+activity | character | | | | | | The activity performed by each subject. Can be: walking, walking_upstairs, walking_downstairs, sitting, standing, laying
+set	|character | | | | | | Identifies if the observations come from the train of the test dataset.  Can be: train, test
 timeBodyAccelerometerMeanXAverage |numeric| 0.222 |	0.2770 |	0.3015 |	0.274302742245795 |		▁▁▂▇▂ | The average for the subject for the activity for the feature as described above.
 timeBodyAccelerometerMeanYAverage	|numeric|				-0.041|	-0.0173|	-0.0013|	-0.0178755238674415|	▁▂▇▇▁ | The average for the subject for the activity for the feature as described above.
 timeBodyAccelerometerMeanZAverage	|numeric|				-0.153|	-0.1082	|-0.0754|	-0.109163815804519|		▁▁▇▅▁| The average for the subject for the activity for the feature as described above.
