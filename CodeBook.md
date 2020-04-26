@@ -2,9 +2,9 @@
 
 ## Variables table
 
-name |	data type | min | median | max | mean | sd | histogram | description
---- |	--- |	--- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
-subject |	numeric | 1.000 |	15.5000 | 30.0000 | 15.5 | 8.67958498608812	|	▇▇▇▇▇ | Identifies the subject who performed the activity for each window sample. Its range is from 1 to 30
+name |	data type | min | median | max | mean | histogram | description
+--- |	--- |	--- | --- | --- | --- | --- | --- 
+|subject |	numeric | 1.000 |	15.5000 | 30.0000 | 15.5 	|	▇▇▇▇▇ | Identifies the subject who performed the activity for each window sample. Its range is from 1 to 30.|
 activity | character | | | | | | | The activity performed by each subject. Can be: walking, walking_upstairs, walking_downstairs, sitting, standing, laying
 set	character | | | | | | | Identifies if the observations come from the train of the test dataset.  Can be: train, test
 timeBodyAccelerometerMeanXAverage |numeric| 0.222 |	0.2770 |	0.3015 |	0.274302742245795 |		▁▁▂▇▂ | The average for the subject for the activity for the feature as described above.
